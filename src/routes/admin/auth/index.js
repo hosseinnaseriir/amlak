@@ -45,6 +45,16 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   try {
+    const { email, password } = req.body;
+    const admin = await Admin.findOne({ email });
+    if (!admin) return res.status(400).json({ errors: ["ایمیل پیدا نشد!"] });
+    const pass = await bcrypt.compare(password, admin.password);
+    if (!pass)
+      return res.status(400).json({ errors: ["ایمیل یا پسورد اشتباه است !"] });
+    const token = jwt.sign({ foo: "bar" }, process.env.JWT_SECRET, {
+      expiresIn: 24 * 24 * 24,
+    });
+    res.status(200).json({ message: ["با موفقیت وارد شدید !"], token });
   } catch (ex) {
     let errors = ex.message.split(",").map((item) => {
       let error = item.split(":");
