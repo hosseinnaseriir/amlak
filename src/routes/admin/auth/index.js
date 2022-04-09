@@ -54,7 +54,7 @@ app.post("/login", async (req, res) => {
     const token = jwt.sign({ foo: "bar" }, process.env.JWT_SECRET, {
       expiresIn: 24 * 24 * 24,
     });
-    res.status(200).json({ message: ["با موفقیت وارد شدید !"], token });
+    res.status(200).json({ message: ["با موفقیت وارد شدید !"], token, email });
   } catch (ex) {
     let errors = ex.message.split(",").map((item) => {
       let error = item.split(":");
