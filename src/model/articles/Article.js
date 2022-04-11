@@ -8,7 +8,7 @@ const ArticleSchema = new Schema({
   },
   summary: {
     type: String,
-    required: [true , 'خلاصه متن الزامی است'],
+    // required: [true , 'خلاصه متن الزامی است'],
   },
   text: {
     type: String,
