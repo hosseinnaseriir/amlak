@@ -2,7 +2,7 @@ const { Router } = require("express");
 const Admin = require("../../../model/admin/auth/Admin");
 const bcrypt = require("bcryptjs");
 const { sendEmail } = require("../../../config/email");
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const app = Router();
 
