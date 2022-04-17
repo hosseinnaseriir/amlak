@@ -6,7 +6,6 @@ const adminRoutes = require("./src/routes/admin/auth");
 const articleRoutes = require("./src/routes/admin/article/index");
 const appRoutes = require("./src/routes/app/auth");
 const fileUpload = require("express-fileupload");
-const bodyParser = require("body-parser");
 
 const app = express();
 
