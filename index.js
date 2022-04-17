@@ -5,14 +5,26 @@ const cors = require("cors");
 const adminRoutes = require("./src/routes/admin/auth");
 const articleRoutes = require("./src/routes/admin/article/index");
 const appRoutes = require("./src/routes/app/auth");
+const fileUpload = require("express-fileupload");
+const bodyParser = require("body-parser");
+
 const app = express();
 
 require("./src/config/env")();
 require("./src/config/db/DB_config")();
 app.use(cors());
 app.use("/static", express.static(appRootPath + "/src/public"));
-app.use(express.json());
+app.use(express.json({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => res.send("Hello World!"));
+app.use(
+  fileUpload({
+    createParentPath: true,
+    limits: {
+      fileSize: 2 * 1024 * 1024 * 1024, //2MB max file(s) size
+    },
+  })
+);
 
 app.use("/articles", articlesRoutes);
 app.use("/admin", adminRoutes);

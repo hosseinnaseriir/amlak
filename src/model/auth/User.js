@@ -31,7 +31,7 @@ const MoshaverSchema = new Schema({
   },
   passport: {
     type: String,
-    required: true,
+    // required: true,
   },
 });
 
