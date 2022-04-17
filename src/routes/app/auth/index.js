@@ -7,6 +7,7 @@ app.post("/register/moshaver", async (req, res) => {
   try {
     const { name, family, phoneNumber, nationalCode, address, passport } =
       req.body;
+    console.log(req.files); // the uploaded file object
     console.log(req.body);
     const admin = await MoshaverSchema.findOne({ phoneNumber });
     if (admin)
@@ -17,7 +18,7 @@ app.post("/register/moshaver", async (req, res) => {
       phoneNumber,
       nationalCode,
       address,
-      passport,
+      passport:'tesyy',
     });
     res.status(201).json({ message: "حساب شما با موفقیت ساخته شد!" });
   } catch (ex) {
