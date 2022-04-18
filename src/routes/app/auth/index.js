@@ -31,7 +31,7 @@ app.post("/register/moshaver", async (req, res) => {
 
     await MoshaverSchema.create({
       ...req.body,
-      passport: passport ? passport.md5 + passport.name + ".jpg" : "",
+      passport: passport?passport.md5 + passport.name + ".jpg" : "",
     });
 
     res.status(201).json({ message: "حساب شما با موفقیت ساخته شد!" });
@@ -55,7 +55,7 @@ app.post("/register/amlak", async (req, res) => {
       return res.status(400).json({
         errors: ["عکس پروانه کسب را فراموش کردید !"],
       });
-      
+
     let passport = req.files?.passport;
     let certificate = req.files?.certificate;
 
@@ -91,9 +91,9 @@ app.post("/register/amlak", async (req, res) => {
 
     await AmlakiSchema.create({
       ...req.body,
-      passport: passport ? passport.md5 + passport.name + ".jpg" : "",
+      passport: passport?passport.md5 + passport.name + ".jpg" : "",
       certificate: certificate
-        ? certificate.md5 + certificate.name + ".jpg"
+      ?certificate.md5 + certificate.name + ".jpg"
         : "",
     });
 
