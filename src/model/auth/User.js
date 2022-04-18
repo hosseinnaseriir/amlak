@@ -66,11 +66,11 @@ const AmlakiSchema = new Schema({
   },
   lat: {
     type: String,
-    required: true,
+    // required: true,
   },
   lon: {
     type: String,
-    required: true,
+    // required: true,
   },
 });
 
