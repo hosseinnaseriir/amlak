@@ -30,7 +30,7 @@ app.post("/register/phone-number", async (req, res) => {
         console.log(status);
       }
     );
-    res.status(200).send({ message: "کد تایید با موفقیت ارسال شد !" });
+    res.status(200).send({ message: "کد تایید با موفقیت ارسال شد !" + verifyCode });
   } catch (ex) {
     let errors = ex.message.split(",").map((item) => {
       let error = item.split(":");
