@@ -18,6 +18,7 @@ app.post("/register/phone-number", async (req, res) => {
     const { phoneNumber } = req.body;
 
     const verifyCode = Math.floor(Math.random() * 100000);
+    await OTPSchema.findOneAndDelete({ phoneNumber });
     await OTPSchema.create({ phoneNumber, otp: verifyCode });
     api.VerifyLookup(
       {
