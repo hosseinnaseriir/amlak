@@ -19,7 +19,7 @@ app.post("/register", async (req, res) => {
         .json({ errors: ["رمز عبور و تکرار آن یکسان نیست !"] });
     const salt = await bcrypt.genSalt(10);
     const pass = await bcrypt.hash(password, salt);
-    const token = jwt.sign({ foo: "bar" }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
       expiresIn: 60 * 60,
     });
     await sendEmail(

@@ -25,6 +25,7 @@ app.use(
   })
 );
 
+
 app.use("/articles", articlesRoutes);
 app.use("/admin", adminRoutes);
 app.use("/admin/article", articleRoutes);

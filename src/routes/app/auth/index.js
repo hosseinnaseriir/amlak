@@ -4,6 +4,81 @@ const { getPath } = require("../../../utils/getPath");
 const app = Router();
 const sharp = require("sharp");
 const { checkImage } = require("../../../utils/checkImage");
+const Kavenegar = require("kavenegar");
+const { OTPSchema } = require("../../../model/auth/OTP");
+var jwt = require("jsonwebtoken");
+
+const api = Kavenegar.KavenegarApi({
+  apikey:
+    "6841684B7A3576694F63544743304F6257666D2F4A7A4F4F4A376367566F745334394236366F2F556748733D",
+});
+
+app.post("/register/phone-number", async (req, res) => {
+  try {
+    const { phoneNumber } = req.body;
+
+    const verifyCode = Math.floor(Math.random() * 100000);
+    await OTPSchema.create({ phoneNumber, otp: verifyCode });
+    api.VerifyLookup(
+      {
+        receptor: phoneNumber,
+        token: verifyCode,
+        template: "verify",
+      },
+      function (response, status) {
+        console.log(response);
+        console.log(status);
+      }
+    );
+    res.status(200).send({ message: "کد تایید با موفقیت ارسال شد !" });
+  } catch (ex) {
+    let errors = ex.message.split(",").map((item) => {
+      let error = item.split(":");
+      return error[error.length - 1];
+    });
+    res.status(400).json({ errors });
+    console.log(errors);
+  }
+});
+
+app.post("/register/phone-number/verify", async (req, res) => {
+  try {
+    const { phoneNumber, otp } = req.body;
+
+    const verifyed = await OTPSchema.findOne({ phoneNumber, otp });
+
+    if (!verifyed) {
+      await OTPSchema.findOneAndDelete({ phoneNumber });
+      return res.status(400).json({
+        errors: ["احراز هویت تایید نشد !"],
+      });
+    }
+
+    if (verifyed.expiresdAt < Date.now() + 120000) {
+      await OTPSchema.findOneAndDelete({ phoneNumber, otp });
+      return res.status(400).json({
+        errors: ["کد منقضی شده است !"],
+      });
+    }
+
+    const token = jwt.sign(
+      { phoneNumber, _id: verifyed.id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
+
+    res.status(200).json({ token });
+  } catch (ex) {
+    let errors = ex.message.split(",").map((item) => {
+      let error = item.split(":");
+      return error[error.length - 1];
+    });
+    res.status(400).json({ errors });
+    console.log(errors);
+  }
+});
 
 app.post("/register/moshaver", async (req, res) => {
   try {
@@ -31,7 +106,7 @@ app.post("/register/moshaver", async (req, res) => {
 
     await MoshaverSchema.create({
       ...req.body,
-      passport: passport?passport.md5 + passport.name + ".jpg" : "",
+      passport: passport ? passport.md5 + passport.name + ".jpg" : "",
     });
 
     res.status(201).json({ message: "حساب شما با موفقیت ساخته شد!" });
@@ -91,9 +166,9 @@ app.post("/register/amlak", async (req, res) => {
 
     await AmlakiSchema.create({
       ...req.body,
-      passport: passport?passport.md5 + passport.name + ".jpg" : "",
+      passport: passport ? passport.md5 + passport.name + ".jpg" : "",
       certificate: certificate
-      ?certificate.md5 + certificate.name + ".jpg"
+        ? certificate.md5 + certificate.name + ".jpg"
         : "",
     });
 

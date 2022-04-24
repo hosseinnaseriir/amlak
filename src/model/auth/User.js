@@ -33,6 +33,10 @@ const MoshaverSchema = new Schema({
     type: String,
     // required: true,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 
 const AmlakiSchema = new Schema({
@@ -71,6 +75,10 @@ const AmlakiSchema = new Schema({
   lon: {
     type: String,
     required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
   },
 });
 
