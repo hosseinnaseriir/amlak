@@ -55,7 +55,11 @@ app.post("/register/phone-number/verify", async (req, res) => {
       });
     }
 
-    if (verifyed.expiresdAt < Date.now() + 120000) {
+    console.log(new Date(verifyed.expiresdAt).getTime() >  new Date().getTime() + 120000 , "verifyed.expiresdAt")
+    console.log(new Date(verifyed.expiresdAt).getTime() >  new Date().getTime() + 20000 , "verifyed.expiresdAt222222")
+
+    // if (new Date(verifyed.expiresdAt).getTime() <  new Date().getTime() + 120000) {
+      if (new Date(verifyed.expiresdAt).getTime() >  new Date().getTime() + 120000) {
       await OTPSchema.findOneAndDelete({ phoneNumber, otp });
       return res.status(400).json({
         errors: ["کد منقضی شده است !"],
@@ -79,6 +83,8 @@ app.post("/register/phone-number/verify", async (req, res) => {
     );
 
     res.status(200).json({ token });
+    await OTPSchema.findOneAndDelete({ phoneNumber, otp });
+
   } catch (ex) {
     let errors = ex.message.split(",").map((item) => {
       let error = item.split(":");
