@@ -61,8 +61,16 @@ app.post("/register/phone-number/verify", async (req, res) => {
       });
     }
 
-    const token = jwt.sign(
-      { phoneNumber, _id: verifyed.id },
+    const isMoshaver = await MoshaverSchema.findOne({ phoneNumber });
+    const isAmlak = await AmlakiSchema.findOne({ phoneNumber });
+
+    let token = jwt.sign(
+      {
+        isMoshaver,
+        isAmlak,
+        phoneNumber,
+        _id: verifyed.id,
+      },
       process.env.JWT_SECRET,
       {
         expiresIn: "24h",
