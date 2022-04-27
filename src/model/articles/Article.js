@@ -14,7 +14,7 @@ const ArticleSchema = new Schema({
     type: String,
     required: [true , 'متن الزامی است'],
   },
-  image: {
+  articleImage: {
     type: String,
     // required: [true , 'عکس الزامی است'],
   },
