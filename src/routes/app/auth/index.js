@@ -6,7 +6,7 @@ const sharp = require("sharp");
 const { checkImage } = require("../../../utils/checkImage");
 const Kavenegar = require("kavenegar");
 const { OTPSchema } = require("../../../model/auth/OTP");
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const api = Kavenegar.KavenegarApi({
   apikey:
@@ -47,6 +47,15 @@ app.post("/register/phone-number", async (req, res) => {
 app.post("/register/phone-number/verify", async (req, res) => {
   try {
     const { phoneNumber, otp } = req.body;
+    const allOTP = await OTPSchema.find();
+    allOTP.map(async (otp) => {
+      if (new Date(otp.expiresdAt).getTime() < new Date().getTime()) {
+        await OTPSchema.findByIdAndDelete(otp._id);
+        return res.status(400).json({
+          errors: ["کد منقضی شده است !"],
+        });
+      }
+    });
 
     const verifyed = await OTPSchema.findOne({ phoneNumber, otp });
 
@@ -57,17 +66,7 @@ app.post("/register/phone-number/verify", async (req, res) => {
       });
     }
 
-    console.log(verifyed.expiresdAt, "verifyed.expiresdAt 120000");
-    console.log(new Date(), "verifyed.expiresdAt 120000");
-    console.log(
-      new Date(verifyed.expiresdAt).getTime() - (new Date().getTime() + 120000),
-      "verifyed.expiresdAt 80000 "
-    );
-
-    if (
-      new Date(verifyed.expiresdAt).getTime() >
-      new Date().getTime() + 120000
-    ) {
+    if (new Date(verifyed.expiresdAt).getTime() < new Date().getTime()) {
       await OTPSchema.findOneAndDelete({ phoneNumber, otp });
       return res.status(400).json({
         errors: ["کد منقضی شده است !"],
