@@ -66,12 +66,12 @@ app.post("/register/phone-number/verify", async (req, res) => {
       });
     }
 
-    if (new Date(verifyed.expiresdAt).getTime() < new Date().getTime()) {
-      await OTPSchema.findOneAndDelete({ phoneNumber, otp });
-      return res.status(400).json({
-        errors: ["کد منقضی شده است !"],
-      });
-    }
+    // if (new Date(verifyed.expiresdAt).getTime() < new Date().getTime()) {
+    //   await OTPSchema.findOneAndDelete({ phoneNumber, otp });
+    //   return res.status(400).json({
+    //     errors: ["کد منقضی شده است !"],
+    //   });
+    // }
 
     const isMoshaver = await MoshaverSchema.findOne({ phoneNumber });
     const isAmlak = await AmlakiSchema.findOne({ phoneNumber });
