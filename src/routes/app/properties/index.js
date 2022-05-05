@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const Property = require("../../../model/property/Property");
-const { checkImage } = require("../../../utils/checkImage");
+const { checkImage } = require("../../../utils/checkImage"); 
 const sharp = require("sharp");
 const { getPath } = require("../../../utils/getPath");
 
@@ -9,6 +9,9 @@ const app = Router();
 app.post("/add", async (req, res) => {
   try {
     const pictures = [];
+    if (!req.files)
+
+      return res.status(400).json({ errors: ["عکس آگهی را فراموش کردید !"] });
     if (Array.isArray(req?.files?.pictures)) {
       req.files.pictures.map(async (pic) => {
         if (checkImage(pic)) {
