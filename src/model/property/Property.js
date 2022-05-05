@@ -52,7 +52,9 @@ const PropertySchema = new Schema({
     type: String,
     required: true,
   },
-  pictures: { type: Array, default: [] },
+  pictures: {
+    type: [{ type: String }],
+  },
   lat: {
     type: Number,
     required: true,

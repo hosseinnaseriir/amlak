@@ -1,6 +1,5 @@
 const { Router } = require("express");
 const Article = require("../../../model/articles/Article");
-
 const app = Router();
 
 app.post("/", async (req, res) => {
