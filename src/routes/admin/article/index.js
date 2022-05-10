@@ -9,6 +9,7 @@ const app = Router();
 app.post("/add", async (req, res) => {
   try {
     const { title, summary, text } = req.body;
+    const normalName = title.split(" ").join('_').trim();
 
     if (!req.files?.articleImage)
       return res.status(400).json({
@@ -27,8 +28,8 @@ app.post("/add", async (req, res) => {
     }
 
     await Article.create({ title, summary, text,
+      normalName,
       articleImage: articleImage ? articleImage.md5 + articleImage.name + ".jpg" : "",
-    
     });
     res.status(201).json({ message: "مقاله جدید با موفقیت ثبت شد !" });
   } catch (ex) {

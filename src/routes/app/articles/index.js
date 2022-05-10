@@ -5,6 +5,7 @@ const app = Router();
 app.post("/", async (req, res) => {
   try {
     const { title, summary, text, image } = req.body;
+    console.log(title)
     await Article.create({ title, summary, text, image });
     res.status(201).json({ message: "مقاله جدید با موفقیت ثبت شد !" });
   } catch (ex) {
@@ -25,6 +26,19 @@ app.get("/", async (req, res) => {
       .all()
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize);
+    res.status(200).send({
+      articles,
+    });
+  } catch (ex) {
+    console.log(ex.message.errrors);
+  }
+});
+
+
+app.get("/single", async (req, res) => {
+  try {
+    const normalName = req.query.normalName;
+    const articles = await Article.find({normalName})
     res.status(200).send({
       articles,
     });

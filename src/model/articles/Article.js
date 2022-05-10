@@ -4,7 +4,7 @@ const { Schema } = require("mongoose");
 const ArticleSchema = new Schema({
   title: {
     type: String,
-    required: [true , ' تیتر الزامی است '],
+    required: [true, " تیتر الزامی است "],
   },
   summary: {
     type: String,
@@ -12,7 +12,10 @@ const ArticleSchema = new Schema({
   },
   text: {
     type: String,
-    required: [true , 'متن الزامی است'],
+    required: [true, "متن الزامی است"],
+  },
+  normalName: {
+    type: String,
   },
   articleImage: {
     type: String,

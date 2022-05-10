@@ -48,7 +48,7 @@ app.post("/register/phone-number/verify", async (req, res) => {
   try {
     const { phoneNumber, otp } = req.body;
     const allOTP = await OTPSchema.find();
-    allOTP.map(async (otp) => {
+    allOTP?.map(async (otp) => {
       if (new Date(otp.expiresdAt).getTime() < new Date().getTime()) {
         await OTPSchema.findByIdAndDelete(otp._id);
         return res.status(400).json({
@@ -56,6 +56,7 @@ app.post("/register/phone-number/verify", async (req, res) => {
         });
       }
     });
+
 
     const verifyed = await OTPSchema.findOne({ phoneNumber, otp });
 
