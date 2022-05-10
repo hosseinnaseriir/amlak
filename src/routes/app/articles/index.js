@@ -34,7 +34,6 @@ app.get("/", async (req, res) => {
   }
 });
 
-
 app.get("/single", async (req, res) => {
   try {
     const normalName = req.query.normalName;

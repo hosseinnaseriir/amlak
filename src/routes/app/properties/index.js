@@ -1,16 +1,30 @@
 const { Router } = require("express");
 const Property = require("../../../model/property/Property");
-const { checkImage } = require("../../../utils/checkImage"); 
+const { checkImage } = require("../../../utils/checkImage");
 const sharp = require("sharp");
 const { getPath } = require("../../../utils/getPath");
 
 const app = Router();
+const getProperies = app.get("/", async (req, res) => {
+  try {
+    const pageNumber = req.query.pageNumber;
+    const pageSize = req.query.pageSize;
+    const properties = await Property.find()
+      .all()
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize);
+    res.status(200).send({
+      properties,
+    });
+  } catch (ex) {
+    console.log(ex.message.errrors);
+  }
+});
 
-app.post("/add", async (req, res) => {
+const addNewProperty = app.post("/add", async (req, res) => {
   try {
     const pictures = [];
     if (!req.files)
-
       return res.status(400).json({ errors: ["عکس آگهی را فراموش کردید !"] });
     if (Array.isArray(req?.files?.pictures)) {
       req.files.pictures.map(async (pic) => {
@@ -71,4 +85,7 @@ app.post("/add", async (req, res) => {
   }
 });
 
-module.exports = app;
+module.exports = {
+  add: addNewProperty,
+  get: getProperies,
+};

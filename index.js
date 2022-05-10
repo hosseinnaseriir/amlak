@@ -33,7 +33,9 @@ app.use("/admin", adminRoutes);
 app.use("/admin/article", articleRoutes);
 app.use("/auth", appRoutes);
 app.use("/contact", commonRoutes);
-app.use("/property", authenticate , propertyRoutes);
+app.use("/property", authenticate , propertyRoutes.add);
+app.use("/properties", propertyRoutes.get);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
