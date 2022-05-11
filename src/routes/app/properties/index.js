@@ -13,8 +13,10 @@ const getProperies = app.get("/", async (req, res) => {
       .all()
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize);
+    const allPropertiesCount = await Property.find().all();
     res.status(200).send({
       properties,
+      count: allPropertiesCount.length,
     });
   } catch (ex) {
     console.log(ex.message.errrors);
@@ -28,7 +30,7 @@ const searchProperies = app.post("/search", async (req, res) => {
       area,
       type,
       assignmentType,
-      price: {$lt : 20 , $gt : 5 }
+      price: { $lt: 20, $gt: 5 },
     })
       .all()
       .skip((pageNumber - 1) * pageSize)
@@ -40,7 +42,6 @@ const searchProperies = app.post("/search", async (req, res) => {
     console.log(ex.message.errrors);
   }
 });
-
 
 const addNewProperty = app.post("/add", async (req, res) => {
   try {
@@ -109,5 +110,5 @@ const addNewProperty = app.post("/add", async (req, res) => {
 module.exports = {
   add: addNewProperty,
   get: getProperies,
-  find : searchProperies
+  find: searchProperies,
 };
