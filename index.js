@@ -35,6 +35,7 @@ app.use("/auth", appRoutes);
 app.use("/contact", commonRoutes);
 app.use("/property", authenticate , propertyRoutes.add);
 app.use("/properties", propertyRoutes.get);
+app.use("/properties", propertyRoutes.find);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

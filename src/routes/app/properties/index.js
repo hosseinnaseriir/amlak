@@ -21,6 +21,27 @@ const getProperies = app.get("/", async (req, res) => {
   }
 });
 
+const searchProperies = app.post("/search", async (req, res) => {
+  try {
+    const properties = await Property.find({
+      city,
+      area,
+      type,
+      assignmentType,
+      price: {$lt : 20 , $gt : 5 }
+    })
+      .all()
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize);
+    res.status(200).send({
+      properties,
+    });
+  } catch (ex) {
+    console.log(ex.message.errrors);
+  }
+});
+
+
 const addNewProperty = app.post("/add", async (req, res) => {
   try {
     const pictures = [];
@@ -88,4 +109,5 @@ const addNewProperty = app.post("/add", async (req, res) => {
 module.exports = {
   add: addNewProperty,
   get: getProperies,
+  find : searchProperies
 };
