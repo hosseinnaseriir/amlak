@@ -110,8 +110,23 @@ const addNewProperty = app.post("/add", async (req, res) => {
   }
 });
 
+const singlePropery = app.get("/single", async (req, res) => {
+  try {
+    const { id } = req.query;
+    const property = await Property.findOne({ id });
+    const similarProperties = await Property.find().limit(4);
+    res.status(200).send({
+      property,
+      similarProperties,
+    });
+  } catch (ex) {
+    console.log(ex.message.errrors);
+  }
+});
+
 module.exports = {
   add: addNewProperty,
   get: getProperies,
   find: searchProperies,
+  one: singlePropery,
 };

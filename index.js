@@ -8,6 +8,7 @@ const commonRoutes = require("./src/routes/app/common");
 const propertyRoutes = require("./src/routes/app/properties");
 const appRoutes = require("./src/routes/app/auth");
 const homeRoutes = require("./src/routes/app/home");
+const aganciesRoutes = require("./src/routes/app/agency");
 const fileUpload = require("express-fileupload");
 const authenticate = require("./src/middlewares/authenticate");
 const app = express();
@@ -34,11 +35,12 @@ app.use("/admin", adminRoutes);
 app.use("/admin/article", articleRoutes);
 app.use("/auth", appRoutes);
 app.use("/contact", commonRoutes);
-app.use("/property", authenticate , propertyRoutes.add);
+app.use("/property", authenticate, propertyRoutes.add);
 app.use("/properties", propertyRoutes.get);
 app.use("/properties", propertyRoutes.find);
+app.use("/properties", propertyRoutes.one);
 app.use("/home", homeRoutes);
+app.use("/agancies", aganciesRoutes);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
