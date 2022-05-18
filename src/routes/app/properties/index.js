@@ -25,12 +25,15 @@ const getProperies = app.get("/", async (req, res) => {
 
 const searchProperies = app.post("/search", async (req, res) => {
   try {
+    const pageNumber = query.pageNumber;
+    const pageSize = query.pageSize;
+    const { city, area, type, assignmentType, minPrice, maxPrice } = req.body;
     const properties = await Property.find({
       city,
       area,
       type,
       assignmentType,
-      price: { $lt: 20, $gt: 5 },
+      price: { $lte: minPrice, $gte: maxPrice },
     })
       .all()
       .skip((pageNumber - 1) * pageSize)

@@ -7,6 +7,7 @@ const articleRoutes = require("./src/routes/admin/article/index");
 const commonRoutes = require("./src/routes/app/common");
 const propertyRoutes = require("./src/routes/app/properties");
 const appRoutes = require("./src/routes/app/auth");
+const homeRoutes = require("./src/routes/app/home");
 const fileUpload = require("express-fileupload");
 const authenticate = require("./src/middlewares/authenticate");
 const app = express();
@@ -36,6 +37,7 @@ app.use("/contact", commonRoutes);
 app.use("/property", authenticate , propertyRoutes.add);
 app.use("/properties", propertyRoutes.get);
 app.use("/properties", propertyRoutes.find);
+app.use("/home", homeRoutes);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
