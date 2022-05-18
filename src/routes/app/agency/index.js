@@ -17,4 +17,19 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.get("/add", async (req, res) => {
+  try {
+    const { title, rate } = req.body;
+    await Agancy.create({ title, rate, picture });
+    res.status(200).json({ message: "آژانس جدید ثبت شد !" });
+  } catch (ex) {
+    let errors = ex.message.split(",").map((item) => {
+      let error = item.split(":");
+      return error[error.length - 1];
+    });
+    res.status(400).json({ errors });
+    console.log(errors);
+  }
+});
+
 module.exports = app;
