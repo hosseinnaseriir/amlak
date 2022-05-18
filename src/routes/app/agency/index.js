@@ -42,7 +42,7 @@ app.post("/add", async (req, res) => {
       });
     }
     await Agancy.create({ title, rate, picture });
-    res.status(200).json({ message: "آژانس جدید ثبت شد !" });
+    res.status(201).json({ message: "آژانس جدید ثبت شد !" });
   } catch (ex) {
     let errors = ex.message.split(",").map((item) => {
       let error = item.split(":");
