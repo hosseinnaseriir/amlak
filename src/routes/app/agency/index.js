@@ -17,7 +17,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get("/add", async (req, res) => {
+app.post("/add", async (req, res) => {
   try {
     const { title, rate } = req.body;
     await Agancy.create({ title, rate, picture });
