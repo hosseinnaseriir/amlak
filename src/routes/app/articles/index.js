@@ -5,7 +5,6 @@ const app = Router();
 app.post("/", async (req, res) => {
   try {
     const { title, summary, text, image } = req.body;
-    console.log(title)
     await Article.create({ title, summary, text, image });
     res.status(201).json({ message: "مقاله جدید با موفقیت ثبت شد !" });
   } catch (ex) {
@@ -20,9 +19,9 @@ app.post("/", async (req, res) => {
 
 app.get("/", async (req, res) => {
   try {
-    const pageNumber = req.query.pageNumber;
-    const pageSize = req.query.pageSize;
-    let articles = await Article.find()
+    const pageNumber = req.query.pageNumber || 1;
+    const pageSize = req.query.pageSize || 8;
+    const articles = await Article.find()
       .all()
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize);

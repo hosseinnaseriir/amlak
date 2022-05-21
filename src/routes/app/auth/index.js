@@ -48,20 +48,21 @@ app.post("/register/phone-number/verify", async (req, res) => {
   try {
     const { phoneNumber, otp } = req.body;
     const allOTP = await OTPSchema.find();
-    allOTP?.map(async (otp) => {
-      if (new Date(otp.expiresdAt).getTime() < new Date().getTime()) {
-        await OTPSchema.findByIdAndDelete(otp._id);
-        return res.status(400).json({
-          errors: ["کد منقضی شده است !"],
-        });
-      }
-    });
-
+    // if (allOTP.length > 0) {
+    //   allOTP.map(async (otps) => {
+    //     if (new Date(otps.expiresdAt).getTime() < new Date().getTime()) {
+    //       await OTPSchema.findByIdAndDelete(otps._id);
+    //       return res.status(400).json({
+    //         errors: ["کد منقضی شده است !!"],
+    //       });
+    //     }
+    //   });
+    // }
 
     const verifyed = await OTPSchema.findOne({ phoneNumber, otp });
 
     if (!verifyed) {
-      await OTPSchema.findOneAndDelete({ phoneNumber });
+      // await OTPSchema.findOneAndDelete({ phoneNumber });
       return res.status(400).json({
         errors: ["احراز هویت تایید نشد !"],
       });

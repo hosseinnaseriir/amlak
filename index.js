@@ -15,6 +15,7 @@ const app = express();
 
 require("./src/config/env")();
 require("./src/config/db/DB_config")();
+
 app.use(cors());
 app.use("/static", express.static(appRootPath + "/src/public"));
 app.use(express.json({ extended: false }));
